@@ -37,4 +37,4 @@ jobs:
         sleep 10
     - name: Verify Swagger
       run: |
-        curl -f http://10.1.0.176:5000/swagger/index.html
+        curl -f http://localhost:5000/swagger/index.html
