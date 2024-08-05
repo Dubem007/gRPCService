@@ -29,12 +29,14 @@ jobs:
       run: dotnet publish src -c Release -o out
     - name: Run Application
       run: |
-        dotnet out/gRPCService.dll &
+        dotnet out/gRPCService.dll > application.log 2>&1 &
       env:
         ASPNETCORE_URLS: http://+:5000
     - name: Wait for Application
       run: |
-        sleep 10
+        sleep 30
+    - name: Check Application Logs
+      run: cat application.log
     - name: Verify Swagger
       run: |
         curl -f http://localhost:5000/swagger/index.html
