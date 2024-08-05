@@ -27,16 +27,26 @@ jobs:
       run: dotnet test src --no-build --verbosity normal
     - name: Publish
       run: dotnet publish src -c Release -o out
-    - name: Run Application
+    - name: Run gRPC Service
       run: |
-        dotnet out/gRPCService.dll > application.log 2>&1 &
-      env:
-        ASPNETCORE_URLS: http://+:5000
-    - name: Wait for Application
+        dotnet out/ProductgRPCService.dll > gRPCService.log 2>&1 &
+    - name: Run Product API
+      run: |
+        dotnet out/Product.API.dll > ProductAPI.log 2>&1 &
+    - name: Run Admin API
+      run: |
+        dotnet out/Admin.API.dll > AdminAPI.log 2>&1 &
+    - name: Wait for Applications
       run: |
         sleep 30
-    - name: Check Application Logs
-      run: cat application.log
+    - name: Check Logs
+      run: |
+        echo "gRPC Service Logs:"
+        cat gRPCService.log
+        echo "Product API Logs:"
+        cat ProductAPI.log
+        echo "Admin API Logs:"
+        cat AdminAPI.log
     - name: Verify Swagger
       run: |
         curl -f http://localhost:5000/swagger/index.html
