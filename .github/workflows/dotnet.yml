@@ -27,9 +27,14 @@ jobs:
       run: dotnet test src --no-build --verbosity normal
     - name: Publish
       run: dotnet publish src -c Release -o out
-    - name: Setup web server
+    - name: Run Application
       run: |
-        sudo apt-get install -y npm
-        sudo npm install -g http-server
-    - name: Run Swagger
-      run: http-server out -p 8080
+        dotnet out/gRPCService.dll &
+      env:
+        ASPNETCORE_URLS: http://+:5000
+    - name: Wait for Application
+      run: |
+        sleep 10
+    - name: Verify Swagger
+      run: |
+        curl -f http://10.1.0.176/:5000/swagger/index.html
