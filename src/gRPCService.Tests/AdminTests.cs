@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace gRPCService.Tests
 {
-    public class ProductTests
+    public class AdminTests
     {
         [Fact]
         public void Test1()
